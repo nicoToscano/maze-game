@@ -58,6 +58,44 @@ function dibujaEscenario() {
   }
 }
 
+var antorcha = function (x, y) {
+  this.x = x;
+  this.y = y;
+
+  this.retraso = 10;
+  this.contador = 0;
+  this.fotograma = 0;
+
+  this.cambiaFotograma = function () {
+    if (this.fotograma < 3) {
+      this.fotograma++;
+    } else {
+      this.fotograma = 0;
+    }
+  };
+
+  this.dibuja = function () {
+    if (this.contador < this.retraso) {
+      this.contador++;
+    } else {
+      this.contador = 0;
+      this.cambiaFotograma();
+    }
+
+    ctx.drawImage(
+      tileMap,
+      this.fotograma * 32,
+      2 * 32,
+      32,
+      32,
+      this.x * anchoF,
+      this.y * altoF,
+      anchoF,
+      altoF
+    );
+  };
+};
+
 var enemigo = function (x, y) {
   this.x = x;
   this.y = y;
@@ -268,6 +306,9 @@ function inicializar() {
   //crear al jugador
   protagonista = new jugador();
 
+  //crear antorchas
+  antorcha1 = new antorcha(0, 0);
+
   //crear enemigos
   enemigos.push(new enemigo(3, 7));
   enemigos.push(new enemigo(5, 7));
@@ -307,6 +348,7 @@ function principal() {
 
   dibujaEscenario();
   protagonista.dibuja();
+  antorcha1.dibuja();
 
   for (i = 0; i < enemigos.length; i++) {
     enemigos[i].mueve();
